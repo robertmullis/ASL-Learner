@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASL Flashcards</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <style>
+        :root {
+            --bg: #6697bd;
+            --card-bg: #f5f8fd;
+            --primary: #5784a4;
+            --primary-dark: #446881;
+            --primary-light: #dce9f3;
+            --text-dark: #2d3748;
+            --text-mid: #4a5568;
+            --text-light: #718096;
+            --white: #F8FAFC;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            min-height: 100vh;
+            font-family: "DM Sans", sans-serif;
+            background-color: var(--bg);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 40px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(6px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo .material-symbols-outlined { font-size: 1.5rem; }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .username-pill {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .username-pill .material-symbols-outlined { font-size: 1rem; }
+
+        .logout-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .logout-link:hover { color: var(--white); text-decoration: underline; }
+
+        /* ── Main ────────────────────────────────── */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 24px 60px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 14px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover { color: var(--white); }
+        .back-link .material-symbols-outlined { font-size: 1rem; }
+
+        .page-header h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 6px;
+        }
+
+        .page-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+        }
+
+        /* ── Progress bar ────────────────────────── */
+        .progress-wrap {
+            width: 100%;
+            max-width: 540px;
+            margin-bottom: 28px;
+        }
+
+        .progress-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .progress-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.75);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .progress-count {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--white);
+            border-radius: 99px;
+            transition: width 0.4s ease;
+        }
+
+        /* ── Flashcard ───────────────────────────── */
+        .card-scene {
+            width: 100%;
+            max-width: 540px;
+            height: 320px;
+            perspective: 1000px;
+            cursor: pointer;
+            margin-bottom: 32px;
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-scene.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 20px;
+            background: white;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 32px;
+            user-select: none;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            justify-content: flex-start;
+            padding-top: 36px;
+        }
+
+        /* Front */
+        .card-letter {
+            font-size: 7rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+
+        .card-hint {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .card-hint .material-symbols-outlined { font-size: 0.9rem; }
+
+        /* Back */
+        .card-back-letter {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 18px;
+            align-self: flex-start;
+        }
+
+        .hand-shape-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            align-self: flex-start;
+        }
+
+        .card-description {
+            font-size: 1rem;
+            color: var(--text-mid);
+            line-height: 1.65;
+            text-align: left;
+            width: 100%;
+        }
+
+        .card-tip {
+            margin-top: 18px;
+            padding: 10px 14px;
+            background: var(--primary-light);
+            border-left: 3px solid var(--primary);
+            border-radius: 0 8px 8px 0;
+            font-size: 0.82rem;
+            color: var(--primary-dark);
+            width: 100%;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            max-width: 540px;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px 22px;
+            border-radius: 12px;
+            font-family: "DM Sans", sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.55);
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.15);
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .nav-btn .material-symbols-outlined { font-size: 1.1rem; }
+
+        .flip-btn {
+            flex: 1;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: "DM Sans", sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: background 0.2s;
+        }
+
+        .flip-btn:hover { background: var(--primary-dark); }
+        .flip-btn .material-symbols-outlined { font-size: 1.1rem; }
+
+        /* ── Letter dots ─────────────────────────── */
+        .dots-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px;
+            max-width: 540px;
+            margin-top: 28px;
+        }
+
+        .dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.85);
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            transition: background 0.15s, transform 0.1s;
+        }
+
+        .dot:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(1.1);
+        }
+
+        .dot.active {
+            background: var(--white);
+            color: var(--primary);
+            border-color: var(--white);
+        }
+
+        .dot.seen {
+            background: rgba(255, 255, 255, 0.4);
+            color: var(--white);
+        }
+
+        /* ── Responsive ──────────────────────────── */
+        @media (max-width: 600px) {
+            header { padding: 14px 20px; }
+            .card-scene { height: 280px; }
+            .card-letter { font-size: 5.5rem; }
+            .nav-btn span.text { display: none; }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a class="logo" href="/">
+            <span class="material-symbols-outlined">sign_language</span>
+            ASL Learner
+        </a>
+        <div class="header-right">
+            <span class="username-pill">
+                <span class="material-symbols-outlined">person</span>
+                {{ username }}
+            </span>
+            <a class="logout-link" href="/logout">Logout</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <a class="back-link" href="/">
+                <span class="material-symbols-outlined">arrow_back</span>
+                Back to dashboard
+            </a>
+            <h1>ASL Alphabet Flashcards</h1>
+            <p>Click a card (or press Space) to flip it. Use arrow keys to navigate.</p>
+        </div>
+
+        <div class="progress-wrap">
+            <div class="progress-meta">
+                <span class="progress-label">Progress</span>
+                <span class="progress-count" id="progress-count">1 / 26</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-fill" style="width: 3.8%"></div>
+            </div>
+        </div>
+
+        <div class="card-scene" id="card" onclick="flipCard()">
+            <div class="card-inner" id="card-inner">
+                <div class="card-face card-front">
+                    <div class="card-letter" id="front-letter">A</div>
+                    <div class="card-hint">
+                        <span class="material-symbols-outlined">touch_app</span>
+                        Click to reveal hand shape
+                    </div>
+                </div>
+                <div class="card-face card-back">
+                    <div class="card-back-letter" id="back-letter">A</div>
+                    <img id="back-image" style="display:none; width: 150px; height: 150px; object-fit: contain; margin-bottom: 16px; border-radius: 8px;" alt="ASL hand shape">
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="nav-btn" id="prev-btn" onclick="navigate(-1)" disabled>
+                <span class="material-symbols-outlined">arrow_back</span>
+                <span class="text">Prev</span>
+            </button>
+            <button class="flip-btn" onclick="flipCard()">
+                <span class="material-symbols-outlined">flip</span>
+                Flip card
+            </button>
+            <button class="nav-btn" id="next-btn" onclick="navigate(1)">
+                <span class="text">Next</span>
+                <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+        </div>
+
+        <div class="dots-wrap" id="dots-wrap"></div>
+    </main>
+
+    <script>
+        const cards = [
+            { letter: "A", image: "a_asl_example.jpg"},
+            { letter: "B", image: "b_asl_example.jpg"},
+            { letter: "C", image: "c_asl_example.jpg"},
+            { letter: "D", image: "d_asl_example.jpg"},
+            { letter: "E", image: "e_asl_example.jpg"},
+            { letter: "F", image: "f_asl_example.jpg"},
+            { letter: "G", image: "g_asl_example.jpg"},
+            { letter: "H", image: "h_asl_example.jpg"},
+            { letter: "I", image: "i_asl_example.jpg"},
+            { letter: "J", image: "j_asl_example.jpg"},
+            { letter: "K", image: "k_asl_example.jpg"},
+            { letter: "L", image: "l_asl_example.jpg"},
+            { letter: "M", image: "m_asl_example.jpg"},
+            { letter: "N", image: "n_asl_example.jpg"},
+            { letter: "O", image: "o_asl_example.jpg"},
+            { letter: "P", image: "p_asl_example.jpg"},
+            { letter: "Q", image: "q_asl_example.jpg"},
+            { letter: "R", image: "r_asl_example.jpg"},
+            { letter: "S", image: "s_asl_example.jpg"},
+            { letter: "T", image: "t_asl_example.jpg"},
+            { letter: "U", image: "u_asl_example.jpg"},
+            { letter: "V", image: "v_asl_example.jpg"},
+            { letter: "W", image: "w_asl_example.jpg"},
+            { letter: "X", image: "x_asl_example.jpg"},
+            { letter: "Y", image: "y_asl_example.jpg"},
+            { letter: "Z", image: "z_asl_example.jpg"},
+        ];
+
+        let currentIndex = 0;
+        let isFlipped = false;
+        const seen = new Set();
+
+        function buildDots() {
+            const wrap = document.getElementById('dots-wrap');
+            wrap.innerHTML = '';
+            cards.forEach((c, i) => {
+                const dot = document.createElement('div');
+                dot.className = 'dot' + (i === 0 ? ' active' : '');
+                dot.textContent = c.letter;
+                dot.onclick = () => goTo(i);
+                dot.id = `dot-${i}`;
+                wrap.appendChild(dot);
+            });
+        }
+
+        function goTo(index) {
+            if (isFlipped) {
+                isFlipped = false;
+                document.getElementById('card').classList.remove('flipped');
+                setTimeout(() => {
+                    currentIndex = index;
+                    updateCard();
+                }, 500);
+            } else {
+                currentIndex = index;
+                updateCard();
+            }
+        }
+
+        function updateCard() {
+            const card = cards[currentIndex];
+            document.getElementById('front-letter').textContent = card.letter;
+            document.getElementById('back-letter').textContent = card.letter;
+
+            // Update image on back
+            const backImg = document.getElementById('back-image');
+            if (card.image) {
+                backImg.src = "{{ url_for('static', filename='examples/') }}" + card.image;
+                backImg.style.display = 'block';
+            } else {
+                backImg.style.display = 'none';
+            }
+
+            const total = cards.length;
+            const num = currentIndex + 1;
+            document.getElementById('progress-count').textContent = `${num} / ${total}`;
+            document.getElementById('progress-fill').style.width = `${(num / total) * 100}%`;
+
+            document.getElementById('prev-btn').disabled = currentIndex === 0;
+            document.getElementById('next-btn').disabled = currentIndex === total - 1;
+
+            document.querySelectorAll('.dot').forEach((d, i) => {
+                d.classList.toggle('active', i === currentIndex);
+                if (seen.has(i)) d.classList.add('seen');
+            });
+        }
+
+        function flipCard() {
+            isFlipped = !isFlipped;
+            document.getElementById('card').classList.toggle('flipped', isFlipped);
+            if (isFlipped) seen.add(currentIndex);
+        }
+
+        function navigate(dir) {
+            const next = currentIndex + dir;
+            if (next < 0 || next >= cards.length) return;
+            goTo(next);
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight') navigate(1);
+            else if (e.key === 'ArrowLeft') navigate(-1);
+            else if (e.key === ' ') { e.preventDefault(); flipCard(); }
+        });
+
+        buildDots();
+        updateCard();
+    </script>
+</body>
+</html>

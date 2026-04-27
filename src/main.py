@@ -74,5 +74,21 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
+@app.route("/flashcards")
+def flashcards():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
+    username = session['username']
+    return render_template('flashcards.html', username=username)
+
+@app.route("/quiz")
+def quiz():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    username = session['username']
+    return render_template('quiz.html', username=username)
+
 if __name__ == "__main__":
     app.run(debug=True)
