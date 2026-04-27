@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASL Leaner</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <style>
+        .form-box {
+            width: 35%;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+            Background-color: #f5f8fd;
+            Border: 1px 1px solid #D1D5DB;
+            Box-Shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1)
+        }
+
+        fieldset{
+            border: none;
+            padding: 0;
+        }
+
+        label{
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+
+        }
+
+        input{
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            font-family: "DM Sans", sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            background-color: #fafaf6;
+            box-sizing: border-box;
+            box-shadow: 0px 2px 3px rgba(0,0,0,0.2);
+        }
+
+        input:focus{
+            outline: none;
+            border-color: #5784a4;
+            box-shadow: 0 0 0 3px rgba(74, 157, 111, 0.1);
+        }
+
+        body{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: "DM Sans", sans-serif;
+            background-color: #6697bd;
+        }
+
+        h1{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #F8FAFC;
+            font-size: 3rem;
+        }
+
+        .error{
+            color: red;
+            text-align: center;
+            border-color: red;
+            border-style: solid;
+            border-width: 1px;
+            background-color: #ffdddd;
+            padding: 10px;
+            margin: 10px 50px;
+            border-radius: 10px;
+        }
+
+        .form-group{
+            margin-bottom: 20px;
+        }
+
+        legend{
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            text-align: center;
+            color: #5784a4;            
+        }
+
+        button{
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            background-color: #5784a4;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            box-shadow: 0px 2px 3px rgba(0,0,0,0.2);
+        }
+
+        button:hover{
+            background: #446881;
+        }
+
+        .form-box p:not(.error) {
+            text-align: center;
+            margin-top: 20px;
+            color: #555;
+        }
+
+        .form-box a {
+            color: #5784a4;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-box a:hover {
+            text-decoration: underline;
+        }
+
+        .strength-bar {
+        flex: 1;
+        height: 5px;
+        border-radius: 3px;
+        background-color: #ccc;
+        transition: background-color 0.3s ease;
+        }
+
+        @media (max-width: 480px) {
+            .form-box {
+                width: 90%;
+                padding: 10px;
+                font-size: 1rem;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            label{
+                display: block;
+                margin-bottom: 8px;
+                font-weight: 300;
+                color: #333;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <h1>
+        <span class="material-symbols-outlined">sign_language</span>
+        ASL Learner
+    </h1>
+
+    <div class="form-box">
+        <form action="/register" method="POST">
+                <fieldset>
+                    <legend>Register</legend>
+
+                    <div class="form-group">
+                        <label for="username"><b>Username</b></label>
+                        <input type="text" id="username" class="curved-input" placeholder="Choose Username" name="username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email"><b>Email</b></label>
+                        <input type="email" id="email" class="curved-input" placeholder="email@example.com" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password"><b>Password</b></label>
+                        <input type="password" id="password" class="curved-input" oninput="checkStrength(this.value)" placeholder="Choose Password" name="password" required >
+                        <div style="display:flex; gap:4px; margin: 8px 0;">
+                            <div class="strength-bar" id="b1"></div>
+                            <div class="strength-bar" id="b2"></div>
+                            <div class="strength-bar" id="b3"></div>
+                            <div class="strength-bar" id="b4"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password"><b>Confirm Password</b></label>
+                        <input type="password" id="confirm_password" class="curved-input" placeholder="Re-Enter Password" name="confirm_password" required>
+                    </div>
+
+                    {% if error %}
+                        <p class="error">{{ error }}</p>
+                    {% endif %}
+
+                    {% if message %}
+                        <p class="success">{{ message }}</p>
+                    {% endif %}
+
+                    <button type="submit">Register</button>
+                </fieldset>
+                <p>Already have an account? <a href="/login">Sign in</a></p>
+        </form>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const errorMsg = document.querySelector('.error');
+    if (errorMsg){
+        setTimeout(function(){
+            errorMsg.style.display = 'none';},
+            5000);
+    }
+
+    function checkStrength(val) {
+        const score = [
+            val.length >= 8,
+            /[A-Z]/.test(val),
+            /[0-9]/.test(val),
+            /[!@#$%^&*]/.test(val)
+        ].filter(Boolean).length;
+
+        const colors = ['#E24B4A', '#EF9F27', '#639922', '#1D9E75'];
+        for (let i = 1; i <= 4; i++) {
+            document.getElementById('b' + i).style.backgroundColor =
+                i <= score ? colors[score - 1] : '#ccc';
+        }
+
+        const btn = document.querySelector('button[type="submit"]');
+        btn.disabled = score < 2 || val.length < 8;
+        btn.style.opacity = score < 2 || val.length < 8 ? '0.5' : '1';
+        btn.style.cursor = score < 2 || val.length < 8 ? 'not-allowed' : 'pointer';
+    }
+</script>

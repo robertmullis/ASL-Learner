@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASL Learner</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <style>
+
+        .form-box {
+            width: 35%;
+            background: #f5f8fd;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .form-group{
+            margin-bottom: 20px;
+        }
+
+        fieldset{
+            border: none;
+            padding: 0;
+        }
+
+        label{
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        legend{
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            text-align: center;
+            color: #5784a4;   
+        }
+
+        input{
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            font-family: "DM Sans", sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            background-color: #fafaf6;
+            box-sizing: border-box;
+            box-shadow: 0px 2px 3px rgba(0,0,0,0.2);
+        }
+
+        input:focus{
+            outline: none;
+            border-color: #5784a4;
+            box-shadow: 0 0 0 3px rgba(74, 157, 111, 0.1);
+        }
+
+        button{
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            background-color: #5784a4;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            box-shadow: 0px 2px 3px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            background: #446881;
+        }
+
+        body{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: "DM Sans", sans-serif;
+            background-color: #6697bd;
+        }
+
+        h1{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #F8FAFC;
+            font-size: 3rem;
+
+            
+        }
+
+        .error{
+            color: red;
+            text-align: center;
+            border-color: red;
+            border-style: solid;
+            border-width: 1px;
+            border-radius: 10px;
+            background-color: #ffdddd;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .form-box p:not(.error) {
+            text-align: center;
+            margin-top: 20px;
+            color: #555;
+        }
+
+        .form-box a {
+            color: #5784a4;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-box a:hover {
+            text-decoration: underline;
+        }
+
+        .success {
+            color: green;
+            text-align: center;
+            border: 1px solid green;
+            background-color: #ddffdd;
+            padding: 10px;
+            margin: 10px 50px;
+            border-radius: 10px;
+        }
+
+        .material-symbols-outlined {
+            font-size: 2.5rem;
+            color: #F8FAFC;
+        }
+
+        @media (max-width: 480px) {
+            .form-box {
+                width: 90%;
+                padding: 10px;
+                font-size: 1rem;
+            }
+
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            label{
+                display: block;
+                margin-bottom: 8px;
+                font-weight: 300;
+                color: #333;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>
+        <span class="material-symbols-outlined">sign_language</span>
+        ASL Learner
+    </h1>
+    <div class="form-box">
+        <form action="/login" method="POST">
+            <fieldset>
+                <legend>Login</legend>
+
+                <div class="form-group">
+                    <label for="Username"><b>Username or Email:</b></label>
+                    <input type="text" id="username" placeholder="Enter Username or Email" name="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password"><b>Password:</b></label>
+                    <input type="password" id="password" placeholder="Enter Password" name="password" required>
+                </div>
+
+                {% if error %}
+                    <p class="error">{{ error }}</p>
+                {% endif %}
+                <button type="submit" class="login-btn">Login</button>
+            </fieldset>
+            <p>Don't have an account? <a href="/register">Register here</a></p>
+            <p><a href="/forgot-password">Forgot Password?</a></p>
+        </form>
+    </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if category == 'error' %}
+                        <div class="error">{{ message }}</div>
+                    {% elif category == 'success' %}
+                        <div class="success">{{ message }}</div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+</body>
+
+</html>
+
+<script>
+    const errorMsg = document.querySelector('.error');
+    if (errorMsg){
+        setTimeout(function(){
+            errorMsg.style.display = 'none';},
+            5000);
+    }
+</script>
