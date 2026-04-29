@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import os
-from models import db, User
+from src.models import db, User
 from argon2 import PasswordHasher
 
 ph = PasswordHasher()
