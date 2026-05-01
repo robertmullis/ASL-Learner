@@ -99,9 +99,9 @@ def login():
                 flash("Login successful!", "success")
                 return redirect(url_for('index'))
             except Exception:
-                flash("Invalid credentials. Please try again.", "danger")
+                flash("Invalid credentials. Please try again.", "error")
         else:
-            flash("Invalid credentials. Please try again.", "danger")
+            flash("Invalid credentials. Please try again.", "error")
 
     return render_template('login.html')
 
