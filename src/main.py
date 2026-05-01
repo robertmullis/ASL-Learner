@@ -6,7 +6,7 @@ import cv2
 import mediapipe as mp
 import base64
 from datetime import datetime, timezone, timedelta
-from src.models import db, User
+from src.src.models import db, User
 from argon2 import PasswordHasher
 
 ph = PasswordHasher()
