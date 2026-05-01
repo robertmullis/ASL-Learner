@@ -20,9 +20,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     'DATABASE_URL',
     'sqlite:///' + os.path.join(curr_dir, 'users.db')
 )
-app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-    "connect_args": {"sslmode": "require"}
-}
+
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
 
 db.init_app(app)
