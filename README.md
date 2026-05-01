@@ -1,7 +1,7 @@
 # Hands Talk
 
 ### Product Description
-Our Hands Talk website aims to teach people the American Sign Language (ASL). It shows the hand sign for each letter of the English alphabet. The flashcards help to memorize each hand sign and check knowledge. The Quiz challenges a user to show a hand sign corresponding to the given letter. This allows for live feedback on the user's learned skills. The site motivates learning by increasing the user's rank as they master ASL.
+Our Hands Talk website aims to teach people the American Sign Language (ASL). It shows the hand sign for each letter of the English alphabet. The flashcards help to memorize each hand sign and check knowledge. The Quiz challenges a user to show a hand sign corresponding to the given letter. This allows for live feedback on the user's learned skills. The site motivates learning by increasing the user's rank as they master ASL. Our website utilizes AI for live image recognition.
 
 ### Tech Stack
 The tech stack used in the website includes:
@@ -10,7 +10,8 @@ The tech stack used in the website includes:
     <li style="margin-bottom: 10px;">Back End with Python and Flask</li>
     <li style="margin-bottom: 10px;">SQLite database</li>
     <li style="margin-bottom: 10px;">OpenCV, MediaPipe, Numpy, Argon2, Pickle, and scikit-learn libraries</li>
-    <li>Render hosting platform for deployment</li>
+    <li style="margin-bottom: 10px;">Version Control with GitHub</li>
+    <li>Deployment on the Render hosting platform</li>
 </ul>
 
 ### Link to Live Site
