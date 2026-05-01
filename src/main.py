@@ -14,7 +14,7 @@ curr_dir = os.path.dirname(os.path.abspath(__file__))
 template_path = os.path.join(curr_dir, "..", "templates")
 
 app = Flask(__name__, template_folder=template_path)
-app.secret_key = os.environ.get('SECRET_KEY', 'fallback-dev-key')
+app.secret_key = os.environ.get('SECRET_KEY', os.environ.get('FALLBACK_DEV_KEY'))
 app.static_folder = os.path.join(os.path.dirname(__file__), '..', 'static')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     'DATABASE_URL',
