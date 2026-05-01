@@ -33,7 +33,13 @@ model = model_dict['model']
 
 # MediaPipe setup
 mp_hands = mp.solutions.hands
-hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
+_hands = None
+
+def get_hands():
+    global _hands
+    if _hands is None:
+        _hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
+    return _hands
 
 LABELS_DICT = {i: chr(65 + i) for i in range(26)}  # {0: 'A', 1: 'B', ...}
 
@@ -162,7 +168,7 @@ def predict():
     frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-    results = hands.process(frame_rgb)
+    results = get_hands().process(frame_rgb)
 
     if not results.multi_hand_landmarks:
         return jsonify({'predicted': '?', 'correct': False, 'error': 'No hand detected'})
