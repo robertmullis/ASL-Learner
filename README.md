@@ -15,7 +15,7 @@ The tech stack used in the website includes:
 </ul>
 
 ### Link to Live Site
-The Hands Talk URL: https://asl-learner.onrender.com/
+The Hands Talk URL: https://hands-talk.onrender.com
 
 ### One Technical Challenge We Faced
 One technical challenge we faced was to achieve a high enough accuracy on the recognition of hand signs shown to the web camera. We experimented with different AI models, such as CNN using different ASL datasets, however, the recognition remained poor. The solution was to create our own ASL dataset, highlight landmarks on the hand images using MediaPipe, and use a Random Forest machine learning algorithm from scikit-learn. We showed a hand sign to the camera and collected 100 images for each sign. This formed our dataset. For our recognition model, we first preprocessed all of the images in our dataset by collecting landmarks on each image using MediaPipe. Then, using the collected landmarks, we trained the model with the Random Forest algorithm as it performs best with small datasets and structured data (landmarks). Finally, we saved the model using Pickle and put it on our webserver to recognize hand signs from images taken by the user in the Quiz section.
