@@ -91,6 +91,22 @@ main {
     padding: 44px 28px 72px;
 }
 
+.category-image {
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: center;
+}
+
+.category-image img,
+#expandable-img {
+    width: 50%;
+    max-width: 800px;
+    height: auto;
+    border-radius: 12px;
+    cursor: zoom-in;
+    transition: opacity 0.2s;
+}
+
 .welcome {
     margin-bottom: 44px;
 }
@@ -297,9 +313,10 @@ main {
 .modal-content {
     transition: transform 0.1s ease-out;
     /* Smooth zooming */
-    max-width: none;
-    /* Allow it to exceed screen width */
+    max-width: 92vw;
     max-height: 90vh;
+    width: auto;
+    height: auto;
     user-select: none;
 }
 
@@ -355,6 +372,12 @@ main {
 
     .card-actions {
         flex-direction: column;
+    }
+
+    .category-image img,
+    #expandable-img {
+        width: 100%;
+        max-width: 100%;
     }
 }
 

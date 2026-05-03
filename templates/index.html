@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="icon" type="image/x-icon" href="../static/sign_language_icon.png">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-        <script src="{{ url_for('static', filename='js/index.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/index.js') }}" defer></script>
 
 </head>
 
@@ -36,11 +36,10 @@
             <p>Learn the ASL Alphabet and practice your signing skills. Your current rank is <strong>{{ rank }}</strong>.</p>
         </div>
 
-        <div class="category-image" style="margin-bottom: 32px; display: flex; justify-content: center;">
+        <div class="category-image">
             <img src="{{ url_for('static', filename='asl_alphabet_horizontal.jpg') }}" 
                 alt="ASL Alphabet" 
                 id="expandable-img"
-                style="width: 50%; max-width: 800px; border-radius: 12px; cursor: zoom-in; transition: opacity 0.2s;"
                 onclick="openModal()">
         </div>
 
@@ -76,6 +75,20 @@
                     </a>
             </div>
         </div>
+
+        <div class="category-card">
+                <div class="category-icon icon-purple">
+                    <span class="material-symbols-outlined">videocam</span>
+                </div>
+                <h3>Live Practice</h3>
+                <p>Sign in real time and get instant feedback.</p>
+                <div class="card-actions">
+                    <a href="/live" class="btn btn-primary">
+                        <span class="material-symbols-outlined">play_circle</span>
+                        Start
+                    </a>
+                </div>
+            </div>
 
             <div class="category-card">
                 <div class="category-icon icon-green">

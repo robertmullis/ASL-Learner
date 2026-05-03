@@ -6,7 +6,7 @@ import cv2
 import mediapipe as mp
 import base64
 from datetime import datetime, timezone, timedelta
-from src.models import db, User
+from models import db, User
 from argon2 import PasswordHasher
 
 ph = PasswordHasher()
@@ -14,7 +14,7 @@ curr_dir = os.path.dirname(os.path.abspath(__file__))
 template_path = os.path.join(curr_dir, "..", "templates")
 
 app = Flask(__name__, template_folder=template_path)
-app.secret_key = os.environ.get('SECRET_KEY', os.environ.get('FALLBACK_DEV_KEY'))
+app.secret_key = "supersecretkey"
 app.static_folder = os.path.join(os.path.dirname(__file__), '..', 'static')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     'DATABASE_URL',
@@ -201,6 +201,45 @@ def predict():
 
     return jsonify({'predicted': predicted_char, 'correct': is_correct})
 
+@app.route("/live")
+def live():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    return render_template('live.html', username=session['username'])
+
+@app.route('/predict_live', methods=['POST'])
+def predict_live():
+    if 'user_id' not in session:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    data = request.get_json()
+    image_data = data['image']
+
+    header, encoded = image_data.split(',', 1)
+    img_bytes = base64.b64decode(encoded)
+    np_arr = np.frombuffer(img_bytes, np.uint8)
+    frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+    results = get_hands().process(frame_rgb)
+    if not results.multi_hand_landmarks:
+        return jsonify({'predicted': None, 'error': 'No hand detected'})
+
+    hand_landmarks = results.multi_hand_landmarks[0]
+    data_aux = []
+    x_ = [lm.x for lm in hand_landmarks.landmark]
+    y_ = [lm.y for lm in hand_landmarks.landmark]
+    for lm in hand_landmarks.landmark:
+        data_aux.append(lm.x - min(x_))
+        data_aux.append(lm.y - min(y_))
+
+    prediction = model.predict([np.asarray(data_aux)])
+    try:
+        predicted_char = LABELS_DICT[int(prediction[0])]
+    except (ValueError, KeyError):
+        predicted_char = str(prediction[0]).upper()
+
+    return jsonify({'predicted': predicted_char})
 
 if __name__ == "__main__":
     app.run(debug=True)
