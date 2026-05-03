@@ -5,77 +5,9 @@
     <title>Live Practice – Hands Talk</title>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/live.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <script src="{{ url_for('static', filename='js/live.js') }}" defer></script>
-    <style>
-        .live-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-            padding: 32px 16px;
-        }
-        .video-container {
-            position: relative;
-            width: 640px;
-            max-width: 100%;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-            background: #111;
-        }
-        video {
-            width: 100%;
-            display: block;
-            transform: scaleX(-1); /* mirror */
-        }
-        .overlay {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            pointer-events: none;
-        }
-        .predicted-letter {
-            font-size: 96px;
-            font-weight: 700;
-            line-height: 1;
-            color: #00c85a;
-            text-shadow: 0 2px 12px rgba(0,0,0,0.5);
-            transition: color 0.2s;
-        }
-        .predicted-letter.no-hand {
-            font-size: 18px;
-            color: #888;
-        }
-        .status-bar {
-            font-size: 13px;
-            color: #aaa;
-            margin-top: 4px;
-        }
-        .tip {
-            color: #888;
-            font-size: 14px;
-            max-width: 500px;
-            text-align: center;
-        }
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            margin-bottom: 16px;
-            transition: color 0.2s;
-        }
-        .back-link:hover {
-            color: #00c85a;
-        }
-        .back-link .material-symbols-outlined {
-            font-size: 1rem;
-        }
-    </style>
 </head>
 <body>
     <header>

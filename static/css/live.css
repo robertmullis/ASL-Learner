@@ -12,14 +12,13 @@
     max-width: 100%;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
     background: #111;
 }
 
 video {
     width: 100%;
     display: block;
-    transform: scaleX(-1);
 }
 
 .overlay {
@@ -34,7 +33,7 @@ video {
     font-weight: 700;
     line-height: 1;
     color: #00c85a;
-    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
     transition: color 0.2s;
 }
 
@@ -50,8 +49,28 @@ video {
 }
 
 .tip {
-    color: #e4e3e3;
+    color: #888;
     font-size: 14px;
     max-width: 500px;
     text-align: center;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: #00c85a;
+}
+
+.back-link .material-symbols-outlined {
+    font-size: 1rem;
 }
